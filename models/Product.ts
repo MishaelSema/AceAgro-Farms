@@ -40,5 +40,8 @@ const ProductSchema = new Schema({
   organic: { type: Boolean, default: true },
 }, { timestamps: true });
 
-const Product: Model<IProduct> = mongoose.models.Product || mongoose.model<IProduct>('Product', ProductSchema);
-export default Product;
+function getProductModel(): Model<IProduct> {
+  return mongoose.models.Product as Model<IProduct> || mongoose.model<IProduct>('Product', ProductSchema);
+}
+
+export default getProductModel();
