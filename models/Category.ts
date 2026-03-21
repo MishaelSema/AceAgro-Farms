@@ -18,8 +18,10 @@ const CategorySchema = new Schema({
   productCount: { type: Number, default: 0 },
 }, { timestamps: true });
 
-function getCategoryModel(): Model<ICategory> {
-  return mongoose.models.Category as Model<ICategory> || mongoose.model<ICategory>('Category', CategorySchema);
-}
+const CATEGORY_NAME = 'Category';
 
-export default getCategoryModel();
+export const Category: Model<ICategory> = 
+  (mongoose as any).models?.[CATEGORY_NAME] as Model<ICategory> ||
+  mongoose.model<ICategory>(CATEGORY_NAME, CategorySchema);
+
+export default Category;

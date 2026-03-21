@@ -22,8 +22,10 @@ const InquirySchema = new Schema({
   },
 }, { timestamps: true });
 
-function getInquiryModel(): Model<IInquiry> {
-  return mongoose.models.Inquiry as Model<IInquiry> || mongoose.model<IInquiry>('Inquiry', InquirySchema);
-}
+const INQUIRY_NAME = 'Inquiry';
 
-export default getInquiryModel();
+export const Inquiry: Model<IInquiry> = 
+  (mongoose as any).models?.[INQUIRY_NAME] as Model<IInquiry> ||
+  mongoose.model<IInquiry>(INQUIRY_NAME, InquirySchema);
+
+export default Inquiry;

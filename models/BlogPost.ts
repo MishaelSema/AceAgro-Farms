@@ -26,8 +26,10 @@ const BlogPostSchema = new Schema({
   published: { type: Boolean, default: true },
 }, { timestamps: true });
 
-function getBlogPostModel(): Model<IBlogPost> {
-  return mongoose.models.BlogPost as Model<IBlogPost> || mongoose.model<IBlogPost>('BlogPost', BlogPostSchema);
-}
+const BLOGPOST_NAME = 'BlogPost';
 
-export default getBlogPostModel();
+export const BlogPost: Model<IBlogPost> = 
+  (mongoose as any).models?.[BLOGPOST_NAME] as Model<IBlogPost> ||
+  mongoose.model<IBlogPost>(BLOGPOST_NAME, BlogPostSchema);
+
+export default BlogPost;

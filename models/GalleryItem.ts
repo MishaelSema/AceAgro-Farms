@@ -22,8 +22,10 @@ const GallerySchema = new Schema({
   featured: { type: Boolean, default: false },
 }, { timestamps: true });
 
-function getGalleryItemModel(): Model<IGalleryItem> {
-  return mongoose.models.GalleryItem as Model<IGalleryItem> || mongoose.model<IGalleryItem>('GalleryItem', GallerySchema);
-}
+const GALLERY_NAME = 'GalleryItem';
 
-export default getGalleryItemModel();
+export const GalleryItem: Model<IGalleryItem> = 
+  (mongoose as any).models?.[GALLERY_NAME] as Model<IGalleryItem> ||
+  mongoose.model<IGalleryItem>(GALLERY_NAME, GallerySchema);
+
+export default GalleryItem;

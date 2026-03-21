@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
 const MONGODB_URI = process.env.MONGO_URL;
 
@@ -18,29 +18,27 @@ if (!global.mongoose) {
 }
 
 async function dbConnect() {
-  if (!MONGODB_URI) {
-    console.error('MONGO_URL environment variable is not set');
-    return null;
-  }
-
   if (cached.conn) {
     return cached.conn;
   }
 
   if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-    };
+    if (!MONGODB_URI) {
+      throw new Error('Please define the MONGO_URL environment variable');
+    }
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+    cached.promise = mongoose.connect(MONGODB_URI, { bufferCommands: false }).then((mongoose) => {
       return mongoose;
-    }).catch((err) => {
-      cached.promise = null;
-      throw err;
     });
   }
+
   cached.conn = await cached.promise;
   return cached.conn;
 }
 
+export function getModel<T extends Document>(modelName: string, schema: Schema<T>): Model<T> {
+  return (mongoose.models[modelName] as Model<T>) || mongoose.model<T>(modelName, schema);
+}
+
+export { mongoose };
 export default dbConnect;

@@ -44,8 +44,10 @@ const OrderSchema = new Schema({
   notes: { type: String },
 }, { timestamps: true });
 
-function getOrderModel(): Model<IOrder> {
-  return mongoose.models.Order as Model<IOrder> || mongoose.model<IOrder>('Order', OrderSchema);
-}
+const ORDER_NAME = 'Order';
 
-export default getOrderModel();
+export const Order: Model<IOrder> = 
+  (mongoose as any).models?.[ORDER_NAME] as Model<IOrder> ||
+  mongoose.model<IOrder>(ORDER_NAME, OrderSchema);
+
+export default Order;

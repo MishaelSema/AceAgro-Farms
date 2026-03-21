@@ -19,8 +19,10 @@ const SocialSchema = new Schema({
   enabled: { type: Boolean, default: true },
 }, { timestamps: true });
 
-function getSocialModel(): Model<ISocial> {
-  return mongoose.models.Social as Model<ISocial> || mongoose.model<ISocial>('Social', SocialSchema);
-}
+const SOCIAL_NAME = 'Social';
 
-export default getSocialModel();
+export const Social: Model<ISocial> = 
+  (mongoose as any).models?.[SOCIAL_NAME] as Model<ISocial> ||
+  mongoose.model<ISocial>(SOCIAL_NAME, SocialSchema);
+
+export default Social;
