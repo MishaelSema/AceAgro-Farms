@@ -5,6 +5,7 @@ import { createContext, useContext, useState, useEffect, useCallback, ReactNode 
 interface AdminAuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
+  mounted: boolean;
   checkAuth: () => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -22,6 +23,7 @@ export function useAdminAuth() {
 export function AdminAuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   const checkAuth = useCallback(async () => {
     setIsLoading(true);
@@ -49,11 +51,12 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    setMounted(true);
     checkAuth();
   }, [checkAuth]);
 
   return (
-    <AdminAuthContext.Provider value={{ isAuthenticated, isLoading, checkAuth, logout }}>
+    <AdminAuthContext.Provider value={{ isAuthenticated, isLoading, mounted, checkAuth, logout }}>
       {children}
     </AdminAuthContext.Provider>
   );

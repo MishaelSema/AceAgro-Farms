@@ -23,9 +23,9 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showCart, setShowCart] = useState(false);
-  const { cartItems, updateQuantity, removeFromCart, clearCart, cartTotal } = useCart();
+  const { cartItems, updateQuantity, removeFromCart, clearCart, cartTotal, mounted: cartMounted } = useCart();
   const { showToast } = useToast();
-  const { isAuthenticated, logout } = useAdminAuth();
+  const { isAuthenticated, logout, mounted: authMounted } = useAdminAuth();
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   useEffect(() => {
@@ -76,7 +76,7 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            {isAuthenticated && (
+            {authMounted && isAuthenticated && (
               <>
                 <Link href="/admin/dashboard" className={styles.adminLink}>
                   <LayoutDashboard size={18} />
@@ -91,7 +91,7 @@ export default function Navbar() {
           </div>
 
           <div className={styles.actions}>
-            {isAuthenticated && (
+            {authMounted && isAuthenticated && (
               <Link href="/admin/dashboard" className={styles.mobileAdminLink}>
                 <LayoutDashboard size={20} />
               </Link>
@@ -101,7 +101,7 @@ export default function Navbar() {
               onClick={() => setShowCart(true)}
             >
               <ShoppingCart size={22} />
-              {cartCount > 0 && (
+              {cartMounted && cartCount > 0 && (
                 <span className={styles.cartBadge}>{cartCount}</span>
               )}
             </button>
@@ -136,9 +136,9 @@ export default function Navbar() {
               }}
             >
               <ShoppingCart size={20} />
-              Cart {cartCount > 0 && `(${cartCount})`}
+              Cart {cartMounted && cartCount > 0 && `(${cartCount})`}
             </button>
-            {isAuthenticated && (
+            {authMounted && isAuthenticated && (
               <>
                 <Link
                   href="/admin/dashboard"

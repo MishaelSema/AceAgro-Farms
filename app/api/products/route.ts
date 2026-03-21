@@ -7,10 +7,14 @@ export async function GET(request: NextRequest) {
     await dbConnect();
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
+    const featured = searchParams.get('featured');
     
-    let query = {};
+    let query: Record<string, unknown> = {};
     if (category) {
-      query = { category };
+      query.category = category;
+    }
+    if (featured === 'true') {
+      query.featured = true;
     }
     
     const products = await Product.find(query).sort({ createdAt: -1 });

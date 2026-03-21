@@ -1,4 +1,7 @@
+import 'server-only';
 import nodemailer from 'nodemailer';
+import dbConnect from '@/lib/dbConnect';
+import Social from '@/models/Social';
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
@@ -88,8 +91,6 @@ function baseTemplate(content: string, socials: any[] = []) {
 
 async function getSocials() {
   try {
-    const { default: dbConnect } = await import('@/lib/dbConnect');
-    const { default: Social } = await import('@/models/Social');
     await dbConnect();
     const socials = await Social.find({ enabled: true });
     return JSON.parse(JSON.stringify(socials));

@@ -1,8 +1,7 @@
 import { Metadata } from 'next';
-import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { generateSEO } from '@/lib/seo';
-import dbConnect from '@/lib/dbConnect';
-import Social from '@/models/Social';
+import { getFooterData } from '@/lib/footerData';
 import ContactForm from './ContactForm';
 import styles from './page.module.css';
 
@@ -34,14 +33,8 @@ function getSocialUrl(platform: string, value: string): string {
   }
 }
 
-async function getSocials() {
-  await dbConnect();
-  const socials = await Social.find({ enabled: true });
-  return JSON.parse(JSON.stringify(socials));
-}
-
 export default async function ContactPage() {
-  const socials = await getSocials();
+  const { socials } = await getFooterData();
 
   return (
     <>

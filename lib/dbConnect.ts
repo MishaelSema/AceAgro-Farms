@@ -1,20 +1,18 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
-
 const MONGODB_URI = process.env.MONGO_URL;
 
 interface MongooseCache {
-  conn: typeof mongoose | null;
-  promise: Promise<typeof mongoose> | null;
+  conn: any;
+  promise: any;
 }
 
 declare global {
-  var mongoose: MongooseCache | undefined;
+  var mongooseGlobalCache: MongooseCache | undefined;
 }
 
-let cached: MongooseCache = global.mongoose || { conn: null, promise: null };
+let cached: MongooseCache = global.mongooseGlobalCache || { conn: null, promise: null };
 
-if (!global.mongoose) {
-  global.mongoose = cached;
+if (!global.mongooseGlobalCache) {
+  global.mongooseGlobalCache = cached;
 }
 
 async function dbConnect() {
@@ -24,21 +22,15 @@ async function dbConnect() {
 
   if (!cached.promise) {
     if (!MONGODB_URI) {
-      throw new Error('Please define the MONGO_URL environment variable');
+      return null;
     }
 
-    cached.promise = mongoose.connect(MONGODB_URI, { bufferCommands: false }).then((mongoose) => {
-      return mongoose;
-    });
+    const mongoose = (await import('mongoose')).default;
+    cached.promise = mongoose.connect(MONGODB_URI, { bufferCommands: false });
   }
 
   cached.conn = await cached.promise;
   return cached.conn;
 }
 
-export function getModel<T extends Document>(modelName: string, schema: Schema<T>): Model<T> {
-  return (mongoose.models[modelName] as Model<T>) || mongoose.model<T>(modelName, schema);
-}
-
-export { mongoose };
 export default dbConnect;
