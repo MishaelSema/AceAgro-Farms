@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface IInquiry extends Document {
   name: string;
@@ -22,4 +22,5 @@ const InquirySchema = new Schema({
   },
 }, { timestamps: true });
 
-export default mongoose.models.Inquiry || mongoose.model<IInquiry>('Inquiry', InquirySchema);
+const Inquiry: Model<IInquiry> = mongoose.models.Inquiry || mongoose.model<IInquiry>('Inquiry', InquirySchema);
+export default Inquiry;

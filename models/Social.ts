@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface ISocial extends Document {
   platform: 'facebook' | 'twitter' | 'instagram' | 'youtube' | 'whatsapp' | 'tiktok';
@@ -19,4 +19,5 @@ const SocialSchema = new Schema({
   enabled: { type: Boolean, default: true },
 }, { timestamps: true });
 
-export default mongoose.models.Social || mongoose.model<ISocial>('Social', SocialSchema);
+const Social: Model<ISocial> = mongoose.models.Social || mongoose.model<ISocial>('Social', SocialSchema);
+export default Social;

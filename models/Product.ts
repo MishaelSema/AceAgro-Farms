@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface IProduct extends Document {
   name: string;
@@ -40,4 +40,5 @@ const ProductSchema = new Schema({
   organic: { type: Boolean, default: true },
 }, { timestamps: true });
 
-export default mongoose.models.Product || mongoose.model<IProduct>('Product', ProductSchema);
+const Product: Model<IProduct> = mongoose.models.Product || mongoose.model<IProduct>('Product', ProductSchema);
+export default Product;

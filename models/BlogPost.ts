@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface IBlogPost extends Document {
   title: string;
@@ -26,4 +26,5 @@ const BlogPostSchema = new Schema({
   published: { type: Boolean, default: true },
 }, { timestamps: true });
 
-export default mongoose.models.BlogPost || mongoose.model<IBlogPost>('BlogPost', BlogPostSchema);
+const BlogPost: Model<IBlogPost> = mongoose.models.BlogPost || mongoose.model<IBlogPost>('BlogPost', BlogPostSchema);
+export default BlogPost;
