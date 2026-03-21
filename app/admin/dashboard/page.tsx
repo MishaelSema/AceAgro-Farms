@@ -94,6 +94,8 @@ function AdminDashboard() {
   const [socials, setSocials] = useState<Social[]>([]);
   const [socialForm, setSocialForm] = useState({ platform: 'facebook', value: '', enabled: true });
   const [editingSocialId, setEditingSocialId] = useState<string | null>(null);
+  const [categoryForm, setCategoryForm] = useState({ name: '', slug: '', description: '', image: '' });
+  const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
@@ -692,7 +694,7 @@ function AdminDashboard() {
                         <td>{category.description?.slice(0, 50) || '-'}...</td>
                         <td>
                           <div className={styles.actions}>
-                            <button onClick={() => openModal('edit', category)} className={styles.actionBtn} title="Edit">
+                            <button onClick={() => { setEditingCategoryId(category._id); setCategoryForm({ name: category.name, slug: category.slug, description: category.description || '', image: category.image }); setShowModal(true); setModalType('edit'); }} className={styles.actionBtn} title="Edit">
                               <Edit2 size={16} />
                             </button>
                             <button onClick={() => handleDelete('categories', category._id)} className={`${styles.actionBtn} ${styles.danger}`} title="Delete">
@@ -845,6 +847,78 @@ function AdminDashboard() {
                   <div><strong>Date:</strong> {new Date(selectedItem.createdAt).toLocaleString()}</div>
                   <div><strong>Message:</strong></div>
                   <p className={styles.messageBox}>{selectedItem.message}</p>
+                </div>
+              )}
+              {modalType === 'edit' && (activeTab === 'categories' || editingCategoryId !== null) && (
+                <div className={styles.formGroup}>
+                  <label>Category Name</label>
+                  <input
+                    type="text"
+                    value={categoryForm.name}
+                    onChange={(e) => {
+                      const name = e.target.value;
+                      const slug = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+                      setCategoryForm({ ...categoryForm, name, slug });
+                    }}
+                    className={styles.input}
+                    placeholder="e.g. Organic Produce"
+                    required
+                  />
+                  <label>Slug</label>
+                  <input
+                    type="text"
+                    value={categoryForm.slug}
+                    onChange={(e) => setCategoryForm({ ...categoryForm, slug: e.target.value })}
+                    className={styles.input}
+                    placeholder="e.g. organic-produce"
+                    required
+                  />
+                  <label>Description</label>
+                  <textarea
+                    value={categoryForm.description}
+                    onChange={(e) => setCategoryForm({ ...categoryForm, description: e.target.value })}
+                    className={styles.textarea}
+                    rows={3}
+                    placeholder="Brief description of this category"
+                  />
+                  <label>Image URL</label>
+                  <input
+                    type="text"
+                    value={categoryForm.image}
+                    onChange={(e) => setCategoryForm({ ...categoryForm, image: e.target.value })}
+                    className={styles.input}
+                    placeholder="https://images.unsplash.com/..."
+                    required
+                  />
+                  <button
+                    onClick={async () => {
+                      try {
+                        const method = editingCategoryId ? 'PUT' : 'POST';
+                        const url = editingCategoryId ? `/api/categories?id=${editingCategoryId}` : '/api/categories';
+                        const res = await fetch(url, {
+                          method,
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify(categoryForm),
+                        });
+                        const data = await res.json();
+                        if (res.ok) {
+                          showToast(editingCategoryId ? 'Category updated' : 'Category created', 'success');
+                          setShowModal(false);
+                          setEditingCategoryId(null);
+                          setCategoryForm({ name: '', slug: '', description: '', image: '' });
+                          fetchData();
+                        } else {
+                          showToast(data.error || 'Failed', 'error');
+                        }
+                      } catch {
+                        showToast('Failed', 'error');
+                      }
+                    }}
+                    className={styles.addBtn}
+                    style={{ marginTop: '1rem' }}
+                  >
+                    {editingCategoryId ? 'Update' : 'Add'} Category
+                  </button>
                 </div>
               )}
                   {modalType === 'edit' && (activeTab === 'socials' || editingSocialId !== null) && (
