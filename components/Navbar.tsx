@@ -181,12 +181,7 @@ export default function Navbar() {
                   {cartItems.map((item) => (
                     <div key={item.id} className={styles.cartItem}>
                       <div className={styles.itemImage}>
-                        <Image
-                          src={item.image}
-                          alt={item.name}
-                          fill
-                          className={styles.image}
-                        />
+                        <img src={item.image} alt={item.name} className={styles.image} />
                       </div>
                       <div className={styles.itemInfo}>
                         <h4>{item.name}</h4>
