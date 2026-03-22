@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Menu, X, ShoppingCart, Trash2, Plus, Minus, LayoutDashboard, LogOut } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useToast } from './ui/Toast';
@@ -57,7 +56,7 @@ export default function Navbar() {
       <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
         <div className={styles.container}>
           <Link href="/" className={styles.logo}>
-            <Image src="/images/logo-light.png" alt="ACE AGRO FARMS" width={160} height={48} className={styles.logoImage} priority />
+            <img src="/images/logo-light.svg" alt="ACE AGRO FARMS" className={styles.logoImage} />
           </Link>
 
           <div className={styles.desktopNav}>
