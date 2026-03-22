@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, ShoppingCart, Leaf, Trash2, Plus, Minus, LayoutDashboard, LogOut } from 'lucide-react';
+import { Menu, X, ShoppingCart, Trash2, Plus, Minus, LayoutDashboard, LogOut } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useToast } from './ui/Toast';
 import { useAdminAuth } from './AdminAuthContext';
@@ -57,13 +57,7 @@ export default function Navbar() {
       <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
         <div className={styles.container}>
           <Link href="/" className={styles.logo}>
-            <div className={styles.logoIcon}>
-              <Leaf size={28} />
-            </div>
-            <div className={styles.logoText}>
-              <span className={styles.logoTitle}>ACE AGRO</span>
-              <span className={styles.logoSubtitle}>FARMS</span>
-            </div>
+            <Image src="/images/logo-light.png" alt="ACE AGRO FARMS" width={160} height={48} className={styles.logoImage} priority />
           </Link>
 
           <div className={styles.desktopNav}>
@@ -232,7 +226,7 @@ export default function Navbar() {
                     <span>FCFA {cartTotal.toLocaleString()}</span>
                   </div>
                   <div className={styles.delivery}>
-                    <span>Free delivery on orders above FCFA 25,000</span>
+                    <span>Delivery costs are calculated at checkout based on your location</span>
                   </div>
                   <Link 
                     href="/checkout" 

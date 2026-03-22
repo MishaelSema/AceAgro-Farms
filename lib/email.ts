@@ -115,7 +115,7 @@ export async function sendOrderConfirmation(email: string, order: any) {
     
     <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
       <h3 style="color: #333; margin-top: 0;">Order Details</h3>
-      <p><strong>Order ID:</strong> <span style="font-family: monospace;">${order._id?.slice(-8).toUpperCase()}</span></p>
+      <p><strong>Order ID:</strong> <span style="font-family: monospace;">${order.orderId || order._id?.slice(-8).toUpperCase()}</span></p>
       <p><strong>Date:</strong> ${new Date(order.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
       <p><strong>Status:</strong> <span style="background: ${secondaryColor}; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px;">Pending</span></p>
     </div>
@@ -145,6 +145,10 @@ export async function sendOrderConfirmation(email: string, order: any) {
       <p style="margin: 5px 0 0;">${order.deliveryAddress}</p>
     </div>
     ` : ''}
+    
+    <div style="background: #e8f5e9; padding: 12px 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid ${primaryColor};">
+      <p style="margin: 0; font-size: 14px; color: #333;"><strong>Delivery Information:</strong> Delivery costs are calculated separately based on your location. Our team will contact you to confirm the delivery fee before your order is processed.</p>
+    </div>
     
     <p style="color: #666; font-size: 14px;">We'll notify you when your order status changes. You can also track your order using your Order ID.</p>
     

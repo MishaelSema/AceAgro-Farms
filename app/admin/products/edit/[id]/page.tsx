@@ -8,8 +8,6 @@ import { useToast } from '@/components/ui/Toast';
 import { AuthGuard } from '@/components/AuthGuard';
 import styles from '../../new/page.module.css';
 
-const categories = ['produce', 'wellness', 'animal', 'fish'];
-
 const unitOptions = [
   { value: 'kg', label: 'per kg' },
   { value: 'g', label: 'per g' },
@@ -31,6 +29,7 @@ function EditProductForm() {
   const { showToast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [categories, setCategories] = useState<{ _id: string; name: string; slug: string }[]>([]);
   const [formData, setFormData] = useState({
     name: '',
     slug: '',
@@ -39,7 +38,7 @@ function EditProductForm() {
     price: '',
     comparePrice: '',
     unit: 'kg',
-    category: 'produce',
+    category: '',
     image: '',
     gallery: [] as string[],
     inStock: true,
@@ -52,6 +51,21 @@ function EditProductForm() {
   });
   const [customUnit, setCustomUnit] = useState('');
   const [isCustomUnit, setIsCustomUnit] = useState(false);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch('/api/categories');
+        const data = await res.json();
+        if (data.categories) {
+          setCategories(data.categories);
+        }
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -73,7 +87,7 @@ function EditProductForm() {
             price: product.price?.toString() || '',
             comparePrice: product.comparePrice?.toString() || '',
             unit: isPredefined ? productUnit : 'other',
-            category: product.category || 'produce',
+            category: product.category || '',
             image: product.image || '',
             gallery: product.gallery || [],
             inStock: product.inStock ?? true,
@@ -405,8 +419,8 @@ function EditProductForm() {
                 <h3>Category</h3>
                 <select name="category" value={formData.category} onChange={handleChange} className={styles.select}>
                   {categories.map(cat => (
-                    <option key={cat} value={cat}>
-                      {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                    <option key={cat._id} value={cat.slug}>
+                      {cat.name}
                     </option>
                   ))}
                 </select>

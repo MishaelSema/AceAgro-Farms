@@ -8,6 +8,15 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category');
     const featured = searchParams.get('featured');
+    const id = searchParams.get('id');
+    
+    if (id) {
+      const product = await Product.findById(id);
+      if (!product) {
+        return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+      }
+      return NextResponse.json({ success: true, product });
+    }
     
     let query: Record<string, unknown> = {};
     if (category) {

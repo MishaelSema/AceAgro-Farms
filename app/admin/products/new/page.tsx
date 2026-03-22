@@ -1,14 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Upload, X } from 'lucide-react';
 import Link from 'next/link';
 import { useToast } from '@/components/ui/Toast';
 import { AuthGuard } from '@/components/AuthGuard';
 import styles from './page.module.css';
-
-const categories = ['produce', 'wellness', 'animal', 'fish'];
 
 const unitOptions = [
   { value: 'kg', label: 'per kg' },
@@ -29,6 +27,7 @@ function NewProductForm() {
   const router = useRouter();
   const { showToast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [categories, setCategories] = useState<{ _id: string; name: string; slug: string }[]>([]);
   const [formData, setFormData] = useState({
     name: '',
     slug: '',
@@ -37,7 +36,7 @@ function NewProductForm() {
     price: '',
     comparePrice: '',
     unit: 'kg',
-    category: 'produce',
+    category: '',
     image: '',
     gallery: [] as string[],
     inStock: true,
@@ -49,6 +48,22 @@ function NewProductForm() {
     productionMethod: 'Organic Farming',
   });
   const [customUnit, setCustomUnit] = useState('');
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch('/api/categories');
+        const data = await res.json();
+        if (data.categories && data.categories.length > 0) {
+          setCategories(data.categories);
+          setFormData(prev => ({ ...prev, category: data.categories[0].slug }));
+        }
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const generateSlug = (name: string) => {
     return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -344,8 +359,8 @@ function NewProductForm() {
                 <h3>Category</h3>
                 <select name="category" value={formData.category} onChange={handleChange} className={styles.select}>
                   {categories.map(cat => (
-                    <option key={cat} value={cat}>
-                      {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                    <option key={cat._id} value={cat.slug}>
+                      {cat.name}
                     </option>
                   ))}
                 </select>

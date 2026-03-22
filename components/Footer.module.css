@@ -27,41 +27,12 @@
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
   text-decoration: none;
 }
 
-.logoIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  background-color: var(--color-secondary);
-  color: white;
-  border-radius: var(--radius-sm);
-}
-
-.logoText {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-}
-
-.logoTitle {
-  font-family: var(--font-heading);
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: white;
-  letter-spacing: 0.05em;
-}
-
-.logoSubtitle {
-  font-family: var(--font-body);
-  font-size: 0.6875rem;
-  font-weight: 600;
-  color: var(--color-secondary-light);
-  letter-spacing: 0.15em;
+.logoImage {
+  height: 48px;
+  width: auto;
 }
 
 .tagline {

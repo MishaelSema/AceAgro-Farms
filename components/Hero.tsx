@@ -20,10 +20,6 @@ export default function Hero() {
       </div>
 
       <div className={styles.content}>
-        <div className={styles.tagline}>
-          <Leaf size={18} />
-          <span>100% Organic & Sustainable</span>
-        </div>
 
         <h1 className={styles.title}>
           From Farm to Wellness

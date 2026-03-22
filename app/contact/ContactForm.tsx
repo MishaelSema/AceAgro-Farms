@@ -83,7 +83,7 @@ export default function ContactForm() {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            placeholder="+237 6XX XXX XXX"
+            placeholder="+237 679 080 426"
             className={styles.input}
           />
         </div>

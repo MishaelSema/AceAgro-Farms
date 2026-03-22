@@ -3,7 +3,7 @@ import mongoose, { Schema, Document, Model } from 'mongoose';
 export interface IProduct extends Document {
   name: string;
   slug: string;
-  category: 'produce' | 'wellness' | 'animal' | 'fish';
+  category: string;
   description: string;
   shortDescription: string;
   healthBenefits: string[];
@@ -24,7 +24,6 @@ const ProductSchema = new Schema({
   slug: { type: String, required: true, unique: true },
   category: { 
     type: String, 
-    enum: ['produce', 'wellness', 'animal', 'fish'],
     required: true 
   },
   description: { type: String, required: true },

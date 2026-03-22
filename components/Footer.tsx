@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Leaf, Mail, Phone, MapPin } from 'lucide-react';
+import Image from 'next/image';
+import { Mail, Phone, MapPin } from 'lucide-react';
 import { getFooterData } from '@/lib/footerData';
 import styles from './Footer.module.css';
 
@@ -51,13 +52,7 @@ export default async function Footer() {
         <div className={styles.grid}>
           <div className={styles.brandSection}>
             <Link href="/" className={styles.logo}>
-              <div className={styles.logoIcon}>
-                <Leaf size={24} />
-              </div>
-              <div className={styles.logoText}>
-                <span className={styles.logoTitle}>ACE AGRO</span>
-                <span className={styles.logoSubtitle}>FARMS</span>
-              </div>
+              <Image src="/images/logo-dark.png" alt="ACE AGRO FARMS" width={160} height={48} className={styles.logoImage} />
             </Link>
             <p className={styles.tagline}>
               From Farm to Wellness – Pure, Natural, and Sustainable Living. We deliver the finest organic produce and wellness products straight from our farm to your table.
@@ -110,7 +105,7 @@ export default async function Footer() {
               </div>
               <div className={styles.contactItem}>
                 <Phone size={18} />
-                <span>+237 6XX XXX XXX</span>
+                <span>+237 679 080 426</span>
               </div>
               <div className={styles.contactItem}>
                 <Mail size={18} />

@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Package, ShoppingCart, FileText, MessageSquare, Grid3X3, Settings, LogOut, Plus, Eye, Edit2, Trash2, X, Users, Mail, Image, Share2 } from 'lucide-react';
+import { Package, ShoppingCart, FileText, MessageSquare, Grid3X3, Settings, LogOut, Plus, Eye, Edit2, Trash2, X, Users, Mail, Image, Share2, ExternalLink } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/Toast';
 import { useAdminAuth } from '@/components/AdminAuthContext';
@@ -285,6 +285,10 @@ function AdminDashboard() {
         <div className={styles.sidebarHeader}>
           <h2>ACE AGRO</h2>
           <span>Admin Panel</span>
+          <a href="/" target="_blank" className={styles.visitSiteBtn}>
+            <ExternalLink size={14} />
+            Visit Main Site
+          </a>
         </div>
 
         <nav className={styles.nav}>

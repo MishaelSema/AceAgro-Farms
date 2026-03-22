@@ -22,8 +22,7 @@ export default function CheckoutPage() {
   const [orderComplete, setOrderComplete] = useState(false);
   const [orderId, setOrderId] = useState('');
 
-  const deliveryFee = cartTotal >= 25000 ? 0 : 2500;
-  const total = cartTotal + deliveryFee;
+  const total = cartTotal;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -130,7 +129,7 @@ export default function CheckoutPage() {
                     <input
                       type="tel"
                       required
-                      placeholder="+237 6XX XXX XXX"
+                      placeholder="+237 679 080 426"
                       value={orderData.phone}
                       onChange={(e) => setOrderData({ ...orderData, phone: e.target.value })}
                       className={styles.input}
@@ -220,9 +219,9 @@ export default function CheckoutPage() {
                   <span>Subtotal</span>
                   <span>FCFA {cartTotal.toLocaleString()}</span>
                 </div>
-                <div className={styles.summaryRow}>
+                <div className={styles.summaryRow} style={{ fontSize: '0.8rem', color: '#666', fontStyle: 'italic' }}>
                   <span>Delivery</span>
-                  <span>{deliveryFee === 0 ? 'Free' : `FCFA ${deliveryFee.toLocaleString()}`}</span>
+                  <span>Calculated at checkout</span>
                 </div>
                 <div className={`${styles.summaryRow} ${styles.total}`}>
                   <span>Total</span>

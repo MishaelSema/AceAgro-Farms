@@ -18,6 +18,7 @@ export async function POST(request: NextRequest) {
     }
     
     const order = new Order({
+      orderId: `AAF-${Date.now().toString(36).toUpperCase()}`,
       customerName: name,
       customerEmail: email,
       customerPhone: phone,
@@ -40,7 +41,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: 'Order created successfully',
-      orderId: order._id,
+      orderId: order.orderId || order._id?.toString(),
     }, { status: 201 });
     
   } catch (error) {
