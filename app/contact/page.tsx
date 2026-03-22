@@ -145,7 +145,7 @@ export default async function ContactPage() {
 
               <div className={styles.mapCard}>
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15913.7!2d11.5021!3d3.848!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM8KwNTEnMDAuMCJOIDExwrAyOSczNi44IkU!5e0!3m2!1sen!2scm!4v1600000000000!5m2!1sen!2scm"
+                  src="https://www.google.com/maps?q=3.807387719968592,11.488985850822516&z=15&output=embed"
                   width="100%"
                   height="300"
                   style={{ border: 0, borderRadius: '8px' }}
