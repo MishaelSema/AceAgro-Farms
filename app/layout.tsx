@@ -4,6 +4,8 @@ import './globals.css';
 import { ToastProvider } from '@/components/ui/Toast';
 import { AdminAuthProvider } from '@/components/AdminAuthContext';
 import ClientLayout from '@/components/ClientLayout';
+import { getFooterData } from '@/lib/footerData';
+import Footer from '@/components/Footer';
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -87,11 +89,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { categories, socials } = await getFooterData();
+
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <head>
@@ -101,7 +105,7 @@ export default function RootLayout({
       <body>
         <ToastProvider>
           <AdminAuthProvider>
-            <ClientLayout>
+            <ClientLayout footer={<Footer categories={categories} socials={socials} />}>
               {children}
             </ClientLayout>
           </AdminAuthProvider>

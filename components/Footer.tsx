@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { Mail, Phone, MapPin } from 'lucide-react';
-import { getFooterData } from '@/lib/footerData';
 import styles from './Footer.module.css';
 
 const quickLinks = [
@@ -42,9 +41,12 @@ function getSocialUrl(platform: string, value: string): string {
   }
 }
 
-export default async function Footer() {
-  const { categories, socials } = await getFooterData();
+interface FooterProps {
+  categories?: { _id: string; name: string; slug: string }[];
+  socials?: { _id: string; platform: string; value: string; enabled: boolean }[];
+}
 
+export default function Footer({ categories = [], socials = [] }: FooterProps) {
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
@@ -58,7 +60,7 @@ export default async function Footer() {
             </p>
             {socials.length > 0 && (
               <div className={styles.social}>
-                {socials.map((social: any) => (
+                {socials.map((social) => (
                   <a
                     key={social._id}
                     href={getSocialUrl(social.platform, social.value)}
@@ -87,7 +89,7 @@ export default async function Footer() {
           <div className={styles.linksSection}>
             <h4>Products</h4>
             <ul>
-              {categories.map((cat: any) => (
+              {categories.map((cat) => (
                 <li key={cat._id}>
                   <Link href={`/products?category=${cat.slug}`}>{cat.name}</Link>
                 </li>

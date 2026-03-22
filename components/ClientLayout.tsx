@@ -1,12 +1,17 @@
 'use client';
 
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import { CartProvider } from '@/context/CartContext';
 import { PageLoader } from '@/components/PageLoader';
 import { usePathname } from 'next/navigation';
 
-export default function ClientLayout({ children }: { children: React.ReactNode }) {
+export default function ClientLayout({
+  children,
+  footer,
+}: {
+  children: React.ReactNode;
+  footer?: React.ReactNode;
+}) {
   const pathname = usePathname();
   const isAdminPage = pathname?.startsWith('/admin');
 
@@ -23,7 +28,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <Navbar />
       <PageLoader />
       <main>{children}</main>
-      <Footer />
+      {footer}
     </CartProvider>
   );
 }
