@@ -169,12 +169,10 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
             <div className={styles.imageColumn}>
               <div className={styles.mainImage}>
                 {allImages[selectedImage] && (
-                  <Image 
+                  <img 
                     src={allImages[selectedImage]} 
                     alt={product.name} 
-                    fill 
                     className={styles.image}
-                    priority
                   />
                 )}
                 {product.organic && (
@@ -192,7 +190,7 @@ export default function ProductDetailClient({ slug }: { slug: string }) {
                       onClick={() => setSelectedImage(idx)}
                       className={`${styles.thumbnail} ${selectedImage === idx ? styles.active : ''}`}
                     >
-                      <Image src={img} alt={`${product.name} ${idx + 1}`} fill className={styles.thumbnailImage} />
+                      <img src={img} alt={`${product.name} ${idx + 1}`} className={styles.thumbnailImage} />
                     </button>
                   ))}
                 </div>

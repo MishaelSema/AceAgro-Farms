@@ -353,9 +353,17 @@
 }
 
 .relatedGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
+
+.relatedGrid > * {
+  flex: 0 0 calc(25% - 1.125rem);
+  min-width: 250px;
+  max-width: 300px;
 }
 
 @media (max-width: 1024px) {
@@ -369,10 +377,6 @@
     top: 0;
     max-width: 600px;
     margin: 0 auto;
-  }
-
-  .relatedGrid {
-    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -414,7 +418,6 @@
   }
 
   .relatedGrid {
-    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
 }
@@ -429,9 +432,9 @@
     height: 60px;
   }
 
-  .relatedGrid {
-    grid-template-columns: 1fr;
-    max-width: 300px;
-    margin: 0 auto;
+  .relatedGrid > * {
+    flex: 0 0 calc(85% - 0.75rem);
+    min-width: unset;
+    max-width: unset;
   }
 }
