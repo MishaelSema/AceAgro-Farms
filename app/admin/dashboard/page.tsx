@@ -3,13 +3,13 @@
 import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Package, ShoppingCart, FileText, MessageSquare, Grid3X3, Settings, LogOut, Plus, Eye, Edit2, Trash2, X, Users, Mail, Image, Share2, ExternalLink } from 'lucide-react';
+import { Package, ShoppingCart, FileText, MessageSquare, Grid3X3, Settings, LogOut, Plus, Eye, Edit2, Trash2, X, Users, Mail, Image, Share2, ExternalLink, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ui/Toast';
 import { useAdminAuth } from '@/components/AdminAuthContext';
 import styles from './page.module.css';
 
-type TabType = 'dashboard' | 'orders' | 'products' | 'blog' | 'inquiries' | 'categories' | 'gallery' | 'socials' | 'settings';
+type TabType = 'dashboard' | 'orders' | 'products' | 'essentials' | 'blog' | 'inquiries' | 'categories' | 'gallery' | 'socials' | 'settings';
 
 interface Order {
   _id: string;
@@ -98,6 +98,7 @@ function AdminDashboard() {
   const [editingSocialId, setEditingSocialId] = useState<string | null>(null);
   const [categoryForm, setCategoryForm] = useState({ name: '', slug: '', description: '', image: '' });
   const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
@@ -143,9 +144,18 @@ function AdminDashboard() {
           setOrders(ordersData.orders || []);
           break;
         case 'products':
-          const productsRes = await fetch('/api/products');
-          const productsData = await productsRes.json();
-          setProducts(productsData.products || []);
+          {
+            const productsRes = await fetch('/api/products');
+            const productsData = await productsRes.json();
+            setProducts(productsData.products || []);
+          }
+          break;
+        case 'essentials':
+          {
+            const productsRes = await fetch('/api/products');
+            const productsData = await productsRes.json();
+            setProducts(productsData.products || []);
+          }
           break;
         case 'blog':
           const blogRes = await fetch('/api/blog');
@@ -232,6 +242,41 @@ function AdminDashboard() {
     }
   };
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, target: 'category' | 'gallery') => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+      console.log('Upload response:', data);
+
+      if (data.success && data.url) {
+        if (target === 'category') {
+          setCategoryForm(prev => ({ ...prev, image: data.url }));
+        } else if (target === 'gallery') {
+          setGalleryForm(prev => ({ ...prev, image: data.url }));
+        }
+        showToast('Image uploaded successfully', 'success');
+      } else {
+        showToast(data.error || 'Upload failed', 'error');
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      showToast('Upload failed', 'error');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   const openModal = (type: 'view' | 'edit', item: any) => {
     setSelectedItem(item);
     setModalType(type);
@@ -263,6 +308,7 @@ function AdminDashboard() {
     { id: 'dashboard', label: 'Dashboard', icon: Package },
     { id: 'orders', label: 'Orders', icon: ShoppingCart },
     { id: 'products', label: 'Products', icon: Package },
+    { id: 'essentials', label: 'Essentials', icon: Sparkles },
     { id: 'blog', label: 'Blog', icon: FileText },
     { id: 'inquiries', label: 'Inquiries', icon: MessageSquare },
     { id: 'categories', label: 'Categories', icon: Grid3X3 },
@@ -284,7 +330,7 @@ function AdminDashboard() {
     <div className={styles.dashboard}>
       <aside className={styles.sidebar}>
         <div className={styles.sidebarHeader}>
-          <h2>ACE AGRO</h2>
+          <img src="/images/logo-dark.svg" alt="ACE AGRO FARMS" style={{ height: 36, width: 'auto' }} />
           <span>Admin Panel</span>
           <a href="/" target="_blank" className={styles.visitSiteBtn}>
             <ExternalLink size={14} />
@@ -561,6 +607,69 @@ function AdminDashboard() {
             ) : (
               <p className={styles.noData}>No products found</p>
             )}
+          </section>
+        )}
+
+        {activeTab === 'essentials' && (
+          <section className={styles.section}>
+            <div className={styles.infoCard}>
+              <h3>Essentials Collection</h3>
+              <p>The Essentials page displays products in the "wellness" category. Add products with category "wellness" to show them on the Essentials page.</p>
+              <Link href="/admin/products/new" className={styles.addBtn} style={{ marginTop: '1rem', display: 'inline-flex' }}>
+                <Plus size={20} />
+                Add New Product
+              </Link>
+            </div>
+            <section className={styles.section} style={{ marginTop: '1.5rem' }}>
+              <h3 style={{ marginBottom: '1rem' }}>Wellness Products</h3>
+              {isLoading ? (
+                <div className={styles.loading}>Loading products...</div>
+              ) : products.filter(p => p.category === 'wellness').length > 0 ? (
+                <div className={styles.tableWrapper}>
+                  <table className={styles.table}>
+                    <thead>
+                      <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Featured</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {products.filter(p => p.category === 'wellness').map((product) => (
+                        <tr key={product._id}>
+                          <td>
+                            <img src={product.image} alt={product.name} className={styles.productImage} />
+                          </td>
+                          <td>{product.name}</td>
+                          <td>{formatPrice(product.price)}</td>
+                          <td>{product.stock}</td>
+                          <td>
+                            <span className={`${styles.badge} ${product.featured ? styles.statusConfirmed : styles.statusDefault}`}>
+                              {product.featured ? 'Yes' : 'No'}
+                            </span>
+                          </td>
+                          <td>
+                            <div className={styles.actions}>
+                              <Link href={`/admin/products/edit/${product._id}`} className={styles.actionBtn} title="Edit">
+                                <Edit2 size={16} />
+                              </Link>
+                              <button onClick={() => handleDelete('products', product._id)} className={`${styles.actionBtn} ${styles.danger}`} title="Delete">
+                                <Trash2 size={16} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p className={styles.noData}>No wellness products found. Add products with category "wellness".</p>
+              )}
+            </section>
           </section>
         )}
 
@@ -896,8 +1005,22 @@ function AdminDashboard() {
                     placeholder="https://images.unsplash.com/..."
                     required
                   />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="category-image-upload"
+                    onChange={(e) => handleImageUpload(e, 'category')}
+                    style={{ display: 'none' }}
+                  />
+                  <label htmlFor="category-image-upload" className={styles.addBtn} style={{ marginTop: '0.5rem', display: 'inline-flex', cursor: 'pointer' }}>
+                    {isUploading ? 'Uploading...' : 'Upload Image'}
+                  </label>
                   <button
                     onClick={async () => {
+                      if (!categoryForm.image) {
+                        showToast('Please add an image URL or upload an image', 'error');
+                        return;
+                      }
                       try {
                         const method = editingCategoryId ? 'PUT' : 'POST';
                         const url = editingCategoryId ? `/api/categories?id=${editingCategoryId}` : '/api/categories';
@@ -1023,6 +1146,16 @@ function AdminDashboard() {
                     className={styles.input}
                     required
                   />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    id="gallery-image-upload"
+                    onChange={(e) => handleImageUpload(e, 'gallery')}
+                    style={{ display: 'none' }}
+                  />
+                  <label htmlFor="gallery-image-upload" className={styles.addBtn} style={{ marginTop: '0.5rem', display: 'inline-flex', cursor: 'pointer' }}>
+                    {isUploading ? 'Uploading...' : 'Upload Image'}
+                  </label>
                   <label>Category</label>
                   <select
                     value={galleryForm.category}

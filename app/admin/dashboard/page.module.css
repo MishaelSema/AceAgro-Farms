@@ -18,13 +18,13 @@
 .sidebarHeader {
   padding: 1.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.sidebarHeader h2 {
-  font-family: var(--font-heading);
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 0.25rem;
+.sidebarHeader img {
+  margin-bottom: 0.5rem;
 }
 
 .sidebarHeader span {

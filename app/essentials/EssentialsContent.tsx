@@ -16,6 +16,7 @@ interface Product {
   unit: string;
   image: string;
   shortDescription: string;
+  category: string;
   organic?: boolean;
   inStock?: boolean;
 }

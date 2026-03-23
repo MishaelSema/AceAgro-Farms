@@ -10,8 +10,8 @@ export default function Hero() {
     <section className={styles.hero}>
       <div className={styles.background}>
         <Image
-          src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1920&q=80"
-          alt="ACE AGRO FARMS - Organic Farm"
+          src="https://images.unsplash.com/photo-1551615134-3242e97c492f?w=1920&q=80"
+          alt="ACE AGRO FARMS - Brahma Chickens Poultry"
           fill
           priority
           className={styles.bgImage}
@@ -28,7 +28,7 @@ export default function Hero() {
 
         <p className={styles.subtitle}>
           Discover premium organic produce, herbal wellness products, 
-          pasture-raised meats, and fresh fish — delivered straight from 
+          pasture-raised meats, fresh fish, and premium fragrances — delivered straight from 
           our farm to your table.
         </p>
 
@@ -37,8 +37,8 @@ export default function Hero() {
             Shop Now
             <ArrowRight size={20} />
           </Link>
-          <Link href="/about" className={styles.secondaryBtn}>
-            Learn More
+          <Link href="/essentials" className={styles.secondaryBtn}>
+            Shop Essentials
           </Link>
         </div>
 

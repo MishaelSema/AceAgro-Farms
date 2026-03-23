@@ -6,7 +6,7 @@ export async function getFooterData() {
   try {
     await dbConnect();
     const [categories, socials] = await Promise.all([
-      Category.find().sort({ createdAt: -1 }).limit(5),
+      Category.find().sort({ createdAt: -1 }).limit(10),
       Social.find({ enabled: true }),
     ]);
     return {

@@ -261,6 +261,10 @@
 }
 
 @media (max-width: 768px) {
+  .logoImage {
+    height: 38px;
+  }
+
   .logoIcon {
     width: 40px;
     height: 40px;

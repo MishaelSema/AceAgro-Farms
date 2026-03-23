@@ -42,9 +42,9 @@ export default function CTASection() {
           <h3>Get In Touch</h3>
           <p>Have questions? We are here to help!</p>
           <div className={styles.contactItems}>
-            <a href="tel:+2348034567890" className={styles.contactItem}>
+            <a href="tel:+237679080426" className={styles.contactItem}>
               <Phone size={20} />
-              <span>+234 803 456 7890</span>
+              <span>+237 679 080 426</span>
             </a>
             <a href="mailto:hello@aceagrofarms.com" className={styles.contactItem}>
               <Mail size={20} />

@@ -42,14 +42,32 @@ function NewBlogForm() {
     }
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData(prev => ({ ...prev, image: reader.result as string }));
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    setIsSubmitting(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (data.success && data.url) {
+        setFormData(prev => ({ ...prev, image: data.url }));
+        showToast('Image uploaded successfully', 'success');
+      } else {
+        showToast('Upload failed', 'error');
+      }
+    } catch (error) {
+      showToast('Upload failed', 'error');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
