@@ -10,7 +10,7 @@ import styles from './Navbar.module.css';
 
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
+  { href: '/essentials', label: 'Essentials' },
   { href: '/products', label: 'Products' },
   { href: '/blog', label: 'Blog' },
   { href: '/gallery', label: 'Gallery' },
