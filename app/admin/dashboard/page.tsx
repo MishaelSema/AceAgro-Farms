@@ -13,6 +13,7 @@ type TabType = 'dashboard' | 'orders' | 'products' | 'blog' | 'inquiries' | 'cat
 
 interface Order {
   _id: string;
+  orderId?: string;
   customerName: string;
   customerEmail: string;
   customerPhone: string;
@@ -416,7 +417,7 @@ function AdminDashboard() {
                     <tbody>
                       {orders.slice(0, 5).map((order) => (
                         <tr key={order._id}>
-                          <td className={styles.orderId}>{order._id.slice(-6).toUpperCase()}</td>
+                        <td className={styles.orderId}>{order.orderId || order._id.slice(-6).toUpperCase()}</td>
                           <td>{order.customerName}</td>
                           <td>{formatPrice(order.totalAmount)}</td>
                           <td>
@@ -814,7 +815,7 @@ function AdminDashboard() {
         )}
       </main>
 
-      {showModal && selectedItem && (
+      {showModal && (
         <div className={styles.modalOverlay} onClick={() => setShowModal(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
@@ -824,9 +825,9 @@ function AdminDashboard() {
               </button>
             </div>
             <div className={styles.modalContent}>
-              {modalType === 'view' && activeTab === 'orders' && (
+              {modalType === 'view' && selectedItem && activeTab === 'orders' && (
                 <div className={styles.detailGrid}>
-                  <div><strong>Order ID:</strong> {selectedItem._id}</div>
+                  <div><strong>Order ID:</strong> {selectedItem.orderId || selectedItem._id}</div>
                   <div><strong>Customer:</strong> {selectedItem.customerName}</div>
                   <div><strong>Email:</strong> {selectedItem.customerEmail}</div>
                   <div><strong>Phone:</strong> {selectedItem.customerPhone}</div>
@@ -926,78 +927,78 @@ function AdminDashboard() {
                   </button>
                 </div>
               )}
-                  {modalType === 'edit' && (activeTab === 'socials' || editingSocialId !== null) && (
-                    <div className={styles.formGroup}>
-                      <label>Platform</label>
-                      <select
-                        value={socialForm.platform}
-                        onChange={(e) => setSocialForm({ ...socialForm, platform: e.target.value })}
-                        className={styles.select}
-                      >
-                        <option value="facebook">Facebook</option>
-                        <option value="instagram">Instagram</option>
-                        <option value="twitter">Twitter</option>
-                        <option value="youtube">YouTube</option>
-                        <option value="whatsapp">WhatsApp</option>
-                        <option value="tiktok">TikTok</option>
-                      </select>
-                      <label>
-                        {socialForm.platform === 'whatsapp' ? 'Phone Number (with country code, e.g. 2376XXXXXXX)' : 'Link / Username / Tag'}
-                      </label>
-                      <input
-                        type="text"
-                        value={socialForm.value}
-                        onChange={(e) => setSocialForm({ ...socialForm, value: e.target.value })}
-                        className={styles.input}
-                        placeholder={
-                          socialForm.platform === 'facebook' ? 'https://facebook.com/yourpage or username' :
-                          socialForm.platform === 'instagram' ? 'https://instagram.com/username or @username' :
-                          socialForm.platform === 'twitter' ? 'https://twitter.com/username or @username' :
-                          socialForm.platform === 'youtube' ? 'Channel name or @handle' :
-                          socialForm.platform === 'whatsapp' ? '2376XXXXXXXX' :
-                          socialForm.platform === 'tiktok' ? 'https://tiktok.com/@username or @username' : ''
+              {modalType === 'edit' && (activeTab === 'socials' || editingSocialId !== null) && (
+                <div className={styles.formGroup}>
+                  <label>Platform</label>
+                  <select
+                    value={socialForm.platform}
+                    onChange={(e) => setSocialForm({ ...socialForm, platform: e.target.value })}
+                    className={styles.select}
+                  >
+                    <option value="facebook">Facebook</option>
+                    <option value="instagram">Instagram</option>
+                    <option value="twitter">Twitter</option>
+                    <option value="youtube">YouTube</option>
+                    <option value="whatsapp">WhatsApp</option>
+                    <option value="tiktok">TikTok</option>
+                  </select>
+                  <label>
+                    {socialForm.platform === 'whatsapp' ? 'Phone Number (with country code, e.g. 2376XXXXXXX)' : 'Link / Username / Tag'}
+                  </label>
+                  <input
+                    type="text"
+                    value={socialForm.value}
+                    onChange={(e) => setSocialForm({ ...socialForm, value: e.target.value })}
+                    className={styles.input}
+                    placeholder={
+                      socialForm.platform === 'facebook' ? 'https://facebook.com/yourpage or username' :
+                      socialForm.platform === 'instagram' ? 'https://instagram.com/username or @username' :
+                      socialForm.platform === 'twitter' ? 'https://twitter.com/username or @username' :
+                      socialForm.platform === 'youtube' ? 'Channel name or @handle' :
+                      socialForm.platform === 'whatsapp' ? '2376XXXXXXXX' :
+                      socialForm.platform === 'tiktok' ? 'https://tiktok.com/@username or @username' : ''
+                    }
+                    required
+                  />
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem' }}>
+                    <input
+                      type="checkbox"
+                      checked={socialForm.enabled}
+                      onChange={(e) => setSocialForm({ ...socialForm, enabled: e.target.checked })}
+                    />
+                    Show on website
+                  </label>
+                  <button
+                    onClick={async () => {
+                      try {
+                        const method = editingSocialId ? 'PUT' : 'POST';
+                        const url = editingSocialId ? `/api/socials?id=${editingSocialId}` : '/api/socials';
+                        const res = await fetch(url, {
+                          method,
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify(socialForm),
+                        });
+                        const data = await res.json();
+                        if (res.ok) {
+                          showToast(editingSocialId ? 'Social updated' : 'Social created', 'success');
+                          setShowModal(false);
+                          setEditingSocialId(null);
+                          fetchData();
+                        } else {
+                          showToast(data.error || 'Failed', 'error');
                         }
-                        required
-                      />
-                      <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.5rem' }}>
-                        <input
-                          type="checkbox"
-                          checked={socialForm.enabled}
-                          onChange={(e) => setSocialForm({ ...socialForm, enabled: e.target.checked })}
-                        />
-                        Show on website
-                      </label>
-                      <button
-                        onClick={async () => {
-                          try {
-                            const method = editingSocialId ? 'PUT' : 'POST';
-                            const url = editingSocialId ? `/api/socials?id=${editingSocialId}` : '/api/socials';
-                            const res = await fetch(url, {
-                              method,
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify(socialForm),
-                            });
-                            const data = await res.json();
-                            if (res.ok) {
-                              showToast(editingSocialId ? 'Social updated' : 'Social created', 'success');
-                              setShowModal(false);
-                              setEditingSocialId(null);
-                              fetchData();
-                            } else {
-                              showToast(data.error || 'Failed', 'error');
-                            }
-                          } catch {
-                            showToast('Failed', 'error');
-                          }
-                        }}
-                        className={styles.addBtn}
-                        style={{ marginTop: '1rem' }}
-                      >
-                        {editingSocialId ? 'Update' : 'Add'} Social
-                      </button>
-                    </div>
-                  )}
-                  {modalType === 'edit' && (activeTab === 'gallery' || editingGalleryId !== null) && (
+                      } catch {
+                        showToast('Failed', 'error');
+                      }
+                    }}
+                    className={styles.addBtn}
+                    style={{ marginTop: '1rem' }}
+                  >
+                    {editingSocialId ? 'Update' : 'Add'} Social
+                  </button>
+                </div>
+              )}
+              {modalType === 'edit' && (activeTab === 'gallery' || editingGalleryId !== null) && (
                 <div className={styles.formGroup}>
                   <label>Title</label>
                   <input

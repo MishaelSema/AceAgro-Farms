@@ -15,6 +15,7 @@ interface OrderItem {
 
 interface OrderStatus {
   _id: string;
+  orderId?: string;
   customerName: string;
   customerEmail: string;
   customerPhone: string;
@@ -155,7 +156,7 @@ export default function TrackOrderPage() {
               <div className={styles.orderHeader}>
                 <div className={styles.orderHeaderLeft}>
                   <span className={styles.orderIdLabel}>Order ID</span>
-                  <span className={styles.orderIdValue}>{order._id.slice(-8).toUpperCase()}</span>
+                  <span className={styles.orderIdValue}>{order.orderId || order._id.slice(-8).toUpperCase()}</span>
                   <span className={styles.orderDate}>
                     Placed on {new Date(order.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                   </span>

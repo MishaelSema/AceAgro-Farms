@@ -16,9 +16,16 @@ export async function GET(request: NextRequest) {
       );
     }
     
-    const order = await Order.findOne({ 
-      _id: orderId,
-      customerEmail: email 
+    const order = await Order.findOne({
+      $and: [
+        {
+          $or: [
+            { _id: orderId },
+            { orderId: orderId }
+          ]
+        },
+        { customerEmail: email }
+      ]
     }).populate('items.product');
     
     if (!order) {
@@ -32,6 +39,7 @@ export async function GET(request: NextRequest) {
       success: true,
       order: {
         _id: order._id,
+        orderId: order.orderId,
         customerName: order.customerName,
         customerEmail: order.customerEmail,
         customerPhone: order.customerPhone,
