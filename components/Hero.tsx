@@ -10,11 +10,12 @@ export default function Hero() {
     <section className={styles.hero}>
       <div className={styles.background}>
         <Image
-          src="https://images.unsplash.com/photo-1551615134-3242e97c492f?w=1920&q=80"
-          alt="ACE AGRO FARMS - Brahma Chickens Poultry"
+          src="https://images.unsplash.com/photo-1551615134-3242e97c492f?auto=format&fit=crop&w=1920&q=80"
+          alt="ACE AGRO FARMS - Brahma Chickens Poultry Farm Cameroon"
           fill
           priority
           className={styles.bgImage}
+          unoptimized
         />
         <div className={styles.overlay} />
       </div>

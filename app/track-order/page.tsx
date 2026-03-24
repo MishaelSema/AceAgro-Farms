@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Search, Package, CheckCircle, Clock, XCircle, Truck, ArrowRight, Leaf, MapPin, Mail, Phone } from 'lucide-react';
+import { Search, Package, CheckCircle, Clock, XCircle, Truck, ArrowRight, Leaf, MapPin, Mail, Phone, UserCircle } from 'lucide-react';
 import { useToast } from '@/components/ui/Toast';
 import styles from './page.module.css';
 
@@ -220,7 +220,7 @@ export default function TrackOrderPage() {
                     <h3>Customer Details</h3>
                     <div className={styles.infoList}>
                       <div className={styles.infoRow}>
-                        <User size={16} />
+                        <UserCircle size={16} />
                         <span>{order.customerName}</span>
                       </div>
                       <div className={styles.infoRow}>
@@ -289,14 +289,5 @@ export default function TrackOrderPage() {
         </div>
       </section>
     </div>
-  );
-}
-
-function User(props: any) {
-  return (
-    <svg width={props.size || 16} height={props.size || 16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-      <circle cx="12" cy="7" r="4"/>
-    </svg>
   );
 }

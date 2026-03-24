@@ -1,6 +1,6 @@
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://aceagrofarms.com';
 const SITE_NAME = 'ACE AGRO FARMS';
-const DEFAULT_DESCRIPTION = 'Premium organic produce, herbal wellness products, pasture-raised meats, and fresh fish. From farm to wellness - pure, natural, and sustainable living.';
+const DEFAULT_DESCRIPTION = 'ACE AGRO FARMS - Premium organic produce, herbal wellness products, pasture-raised meats, and fresh fish from our farm in Yaoundé, Cameroon. Chemical-free, sustainable, farm-to-table delivery across Cameroon.';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/images/og-image.jpg`;
 
 interface SEOData {
@@ -45,6 +45,7 @@ export function generateSEO({
         },
       ],
       type: ogType,
+      locale: 'en_CM',
     },
     twitter: {
       card: 'summary_large_image',
@@ -52,35 +53,47 @@ export function generateSEO({
       description: metaDescription,
       images: [imageUrl],
     },
+    other: {
+      'geo.region': 'CM',
+      'geo.placename': 'Yaoundé',
+    },
   };
 }
 
 function getDefaultKeywords(pageTitle: string): string[] {
   const baseKeywords = [
-    'organic farming',
-    'organic produce',
-    'herbal tea',
-    'wellness products',
-    'pasture raised meat',
-    'fresh fish',
-    'sustainable agriculture',
-    'farm to table',
-    'natural products',
-    'health food',
+    'ACE AGRO FARMS',
+    'ACE AGRO FARMS Cameroon',
+    'ACE AGRO FARMS Yaoundé',
+    'organic farming Cameroon',
+    'organic produce Yaoundé',
+    'organic vegetables Douala',
+    'herbal wellness products Cameroon',
+    'pasture raised meat Cameroon',
+    'fresh fish Cameroon',
+    'sustainable agriculture Cameroon',
+    'farm to table Cameroon',
+    'natural products Cameroon',
+    'chemical free vegetables Cameroon',
+    'organic farm Centre Cameroon',
+    'buy organic food Yaoundé',
+    'fresh farm products Cameroon',
+    'natural wellness Cameroon',
   ];
 
   const pageKeywords: { [key: string]: string[] } = {
-    home: ['organic farm', 'wellness farm', 'natural food delivery', 'farm fresh produce'],
-    about: ['farm story', 'organic farming practices', 'sustainable agriculture', 'ACE AGRO FARMS story'],
-    products: ['buy organic produce', 'herbal wellness products', 'pasture raised meat', 'fresh fish'],
-    produce: ['organic vegetables', 'organic fruits', 'fresh farm produce', 'chemical free vegetables'],
-    wellness: ['herbal tea', 'natural remedies', 'medicinal herbs', 'wellness beverages'],
-    animal: ['pasture raised chicken', 'goat meat', 'rabbit meat', 'ethical farming'],
-    fish: ['fresh fish', 'aquaculture', 'pond raised fish', 'sustainable fish farming'],
-    blog: ['organic living tips', 'health benefits', 'farm to table recipes', 'wellness blog'],
-    gallery: ['farm photos', 'organic farm images', 'agriculture photography'],
-    contact: ['contact organic farm', 'order organic products', 'farm visit'],
-    shop: ['buy organic online', 'farm products shop', 'order fresh produce'],
+    home: ['ACE AGRO FARMS', 'organic farm Cameroon', 'wellness farm Yaoundé', 'natural food delivery Cameroon', 'farm fresh produce Douala', 'organic groceries Cameroon'],
+    about: ['ACE AGRO FARMS story', 'farm story Cameroon', 'organic farming practices Yaoundé', 'sustainable agriculture Cameroon', 'about ACE AGRO FARMS'],
+    products: ['buy organic produce Cameroon', 'herbal wellness products Yaoundé', 'pasture raised meat Douala', 'fresh fish Cameroon', 'organic vegetables online Cameroon', 'ACE AGRO FARMS products'],
+    produce: ['organic vegetables Yaoundé', 'organic fruits Cameroon', 'fresh farm produce Douala', 'chemical free vegetables Cameroon', 'local organic produce Yaoundé'],
+    wellness: ['herbal tea Cameroon', 'natural remedies Yaoundé', 'medicinal herbs Cameroon', 'wellness beverages Cameroon', 'organic moringa Cameroon', 'ACE AGRO FARMS wellness'],
+    animal: ['pasture raised chicken Cameroon', 'goat meat Yaoundé', 'ethical farming Cameroon', 'free range eggs Cameroon', 'poultry farm Cameroon'],
+    fish: ['fresh fish Yaoundé', 'aquaculture Cameroon', 'pond raised fish Douala', 'sustainable fish farming Cameroon', 'fresh fish delivery Cameroon'],
+    essentials: ['ACE AGRO FARMS essentials', 'organic wellness Cameroon', 'natural fragrance Cameroon', 'essential oils Cameroon', 'organic skincare Cameroon', 'herbal products Yaoundé'],
+    blog: ['ACE AGRO FARMS blog', 'organic living tips Cameroon', 'health benefits Yaoundé', 'farm to table recipes Cameroon', 'wellness blog Cameroon', 'natural health Cameroon'],
+    gallery: ['ACE AGRO FARMS gallery', 'farm photos Cameroon', 'organic farm images Yaoundé', 'agriculture photography Cameroon'],
+    contact: ['ACE AGRO FARMS contact', 'contact organic farm Cameroon', 'order organic products Yaoundé', 'farm visit Douala', 'buy organic food near me Cameroon'],
+    shop: ['buy organic online Cameroon', 'farm products shop Yaoundé', 'order fresh produce Douala', 'organic store Cameroon', 'ACE AGRO FARMS shop'],
   };
 
   const lowerTitle = pageTitle.toLowerCase();
