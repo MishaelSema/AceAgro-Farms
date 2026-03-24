@@ -101,6 +101,17 @@ export default async function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-N2TY1QMFD0"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-N2TY1QMFD0');
+            `,
+          }}
+        />
       </head>
       <body>
         <ToastProvider>
